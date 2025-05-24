@@ -1,7 +1,7 @@
 const http = require('http');
 require('dotenv').config();
 const connectDB = require('./config/db');
-const routeRequest = require('./routes/rapidasRutas');
+const routeRequest = require('./routes/camisaRutas');
 
 const PORT = process.env.PORT || 3000;
 
