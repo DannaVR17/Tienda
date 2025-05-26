@@ -32,7 +32,7 @@ function ropa() {
             <img src="../assets/img/ropa.jpeg" class="card-img-top" alt="...">
         </a>
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Ropa</h5>
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@ function ropa() {
     <div class="card">
       <img src="../assets/img/juguetes.jpeg" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Juguetes</h5>
       </div>
     </div>
   </div>
@@ -48,7 +48,7 @@ function ropa() {
     <div class="card">
       <img src="../assets/img/limpieza.png" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Productos de limpieza</h5>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@ function ropa() {
     <div class="card">
       <img src="../assets/img/comida.jpeg" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Comida</h5>
       </div>
     </div>
   </div>
@@ -64,7 +64,7 @@ function ropa() {
     <div class="card">
       <img src="../assets/img/frutas.jpeg" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Frutas</h5>
       </div>
     </div>
   </div>
@@ -72,7 +72,16 @@ function ropa() {
     <div class="card">
       <img src="../assets/img/bebidas.jpeg" class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">Bebidas</h5>
+      </div>
+    </div>
+  </div>
+
+   <div class="col">
+    <div class="card">
+      <img src="../assets/img/mascotas.jpg" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Mascotas</h5>
       </div>
     </div>
   </div>
