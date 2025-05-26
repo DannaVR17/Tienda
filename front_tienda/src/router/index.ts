@@ -6,6 +6,11 @@ import Home from '@/views/Home.vue'
 import Update from '@/views/tienda/Ropa/Update.vue'
 import Delete from '@/views/tienda/Ropa/Delete.vue'
 import Create from '@/views/tienda/Ropa/Create.vue'
+import MascotasRead from '@/views/tienda/Mascotas/MascotasRead.vue'
+import MascotasUpdate from '@/views/tienda/Mascotas/MascotasUpdate.vue'
+import MascotasDelete from '@/views/tienda/Mascotas/MascotasDelete.vue'
+import MascotasCreate from '@/views/tienda/Mascotas/MascotasCreate.vue'
+
 
 
 const router = createRouter({
@@ -17,6 +22,10 @@ const router = createRouter({
     { path: '/ropa/create', component: Create },
     { path: '/ropa/update/:id', component: Update, props: true },
     { path: '/ropa/delete/:id', component: Delete, props: true },
+    { path: '/mascotas', component: MascotasRead },
+    { path: '/mascotas/create', component: MascotasCreate },
+    { path: '/mascotas/update/:id', component: MascotasUpdate, props: true },
+    { path: '/mascotas/delete/:id', component: MascotasDelete, props: true },
   ],
 })
 

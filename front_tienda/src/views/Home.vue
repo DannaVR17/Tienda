@@ -11,6 +11,10 @@ function ropa() {
   router.push('/Ropa')
 }
 
+function mascotas() {
+  router.push('/mascotas')
+}
+
 
 </script>
 
@@ -79,7 +83,9 @@ function ropa() {
 
    <div class="col">
     <div class="card">
-      <img src="../assets/img/mascotas.jpg" class="card-img-top" alt="...">
+      <a href="" @click="mascotas">
+        <img src="../assets/img/mascotas.jpg" class="card-img-top" alt="...">
+      </a>
       <div class="card-body">
         <h5 class="card-title">Mascotas</h5>
       </div>
