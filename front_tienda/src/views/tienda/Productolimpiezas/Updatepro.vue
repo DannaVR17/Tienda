@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import apiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/productosApiServices'
 
 const route = useRoute()
 const router = useRouter()
 
-interface mascota {
+interface Producto {
   nombre: string
-  peso: string
-  edad_perro: number
   precio: number
+  descripcion?: string
 }
 
-const mascota = reactive<mascota>({
+const Producto = reactive<Producto>({
   nombre: '',
-  peso: '',
-  edad_perro: 0,
   precio: 0,
+  descripcion: '',
 })
 
 const error = ref('')
@@ -25,25 +23,24 @@ const error = ref('')
 onMounted(async () => {
   try {
     const id = route.params.id as string
-    const data = await apiService.getAlimentosById(id)
-    mascota.nombre = data.nombre
-    mascota.peso = data.peso
-    mascota.edad_perro = data.edad_perro
-    mascota.precio = data.precio
+    const data = await apiService.getProductoById(id)
+    Producto.nombre = data.nombre
+    Producto.precio = data.precio
+    Producto.descripcion = data.descripcion
   } catch (e) {
-    error.value = 'Error cargando datos de la mascota.'
+    error.value = 'Error cargando datos de la camisa.'
     console.error(e)
   }
 })
 
-const actualizarMascota = async () => {
+const updateProducto = async () => {
   try {
     const id = route.params.id as string
-    await apiService.updateAlimentos(id, mascota)
-    alert('Mascota actualizada con éxito.')
-    router.push('/mascotas')
+    await apiService.updateProducto(id, Producto)
+    alert('Producto actualizado con éxito.')
+    router.push('/productos')
   } catch (e) {
-    error.value = 'Error actualizando la mascota.'
+    error.value = 'Error actualizando el producto.'
     console.error(e)
   }
 }
@@ -51,52 +48,37 @@ const actualizarMascota = async () => {
 
 <template>
   <div class="form-container">
-    <h2>Editar Mascota</h2>
-    <form @submit.prevent="actualizarMascota" novalidate>
+    <h2>Editar Producto</h2>
+    <form @submit.prevent="updateProducto" novalidate>
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input
           type="text"
           id="nombre"
-          v-model="mascota.nombre"
+          v-model="Producto.nombre"
           required
-          placeholder="Nombre de la mascota"
+          placeholder="Nombre del producto"
         />
       </div>
 
-        <div class="form-group">
-          <label for="peso">Peso (kg):</label>
-          <input
-            type="number"
-            id="peso"
-            v-model.number="mascota.peso"
-            required
-            placeholder="Ej. 4.5"
-            step="0.1"
-            min="0"
-          />
-        </div>
-
-          <div class="form-group">
-            <label for="edad_perro">Edad del perro (años):</label>
-            <input
-              type="number"
-              id="edad_perro"
-              v-model.number="mascota.edad_perro"
-              required
-              placeholder="Ej. 3"
-              min="0"
-            />
-          </div>
-
-      <div class="form-group">
+            <div class="form-group">
         <label for="precio">Precio:</label>
         <input
           type="number"
           id="precio"
-          v-model.number="mascota.precio"
+          v-model.number="Producto.precio"
           required
-          placeholder="Precio de la camisa"
+          placeholder="Precio del producto"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input
+          type="text"
+          id="descripcion"
+          v-model="Producto.descripcion"
+          placeholder="Descripción del producto"
         />
       </div>
 

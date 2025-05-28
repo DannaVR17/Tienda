@@ -1,49 +1,58 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import apiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/JuguetesApiServices'
 
 const route = useRoute()
 const router = useRouter()
 
-interface mascota {
+interface juguete {
   nombre: string
-  peso: string
-  edad_perro: number
+  talla: string
+  color: string
   precio: number
+  categoria: string
+  edadRecomendada: number
 }
 
-const mascota = reactive<mascota>({
+
+const juguete = reactive<juguete>({
   nombre: '',
-  peso: '',
-  edad_perro: 0,
+  talla: '',
+  color: '',
   precio: 0,
+  categoria: '',
+  edadRecomendada: 0,
 })
+
 
 const error = ref('')
 
 onMounted(async () => {
   try {
     const id = route.params.id as string
-    const data = await apiService.getAlimentosById(id)
-    mascota.nombre = data.nombre
-    mascota.peso = data.peso
-    mascota.edad_perro = data.edad_perro
-    mascota.precio = data.precio
+    const data = await apiService.getjugueteById(id)
+    juguete.nombre = data.nombre
+    juguete.talla = data.talla
+    juguete.color = data.color
+    juguete.precio = data.precio
+    juguete.categoria = data.categoria
+    juguete.edadRecomendada = data.edadRecomendada
+
   } catch (e) {
-    error.value = 'Error cargando datos de la mascota.'
+    error.value = 'Error cargando datos de la juguete.'
     console.error(e)
   }
 })
 
-const actualizarMascota = async () => {
+const actualizarjuguete = async () => {
   try {
     const id = route.params.id as string
-    await apiService.updateAlimentos(id, mascota)
-    alert('Mascota actualizada con éxito.')
-    router.push('/mascotas')
+    await apiService.updatejuguete(id, juguete)
+    alert('juguete actualizada con éxito.')
+    router.push('/juguetes')
   } catch (e) {
-    error.value = 'Error actualizando la mascota.'
+    error.value = 'Error actualizando la juguete.'
     console.error(e)
   }
 }
@@ -51,52 +60,50 @@ const actualizarMascota = async () => {
 
 <template>
   <div class="form-container">
-    <h2>Editar Mascota</h2>
-    <form @submit.prevent="actualizarMascota" novalidate>
+    <h2>Editar juguete</h2>
+    <form @submit.prevent="actualizarjuguete" novalidate>
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input
           type="text"
           id="nombre"
-          v-model="mascota.nombre"
+          v-model="juguete.nombre"
           required
-          placeholder="Nombre de la mascota"
+          placeholder="Nombre de la juguete"
         />
       </div>
 
-        <div class="form-group">
-          <label for="peso">Peso (kg):</label>
-          <input
-            type="number"
-            id="peso"
-            v-model.number="mascota.peso"
-            required
-            placeholder="Ej. 4.5"
-            step="0.1"
-            min="0"
-          />
-        </div>
+      <div class="form-group">
+  <label for="categoria">Categoría:</label>
+  <input
+    type="text"
+    id="categoria"
+    v-model="juguete.categoria"
+    required
+    placeholder="Categoría del juguete"
+  />
+</div>
 
-          <div class="form-group">
-            <label for="edad_perro">Edad del perro (años):</label>
-            <input
-              type="number"
-              id="edad_perro"
-              v-model.number="mascota.edad_perro"
-              required
-              placeholder="Ej. 3"
-              min="0"
-            />
-          </div>
+<div class="form-group">
+  <label for="edad">Edad recomendada:</label>
+  <input
+    type="number"
+    id="edad"
+    v-model.number="juguete.edadRecomendada"
+    required
+    placeholder="Edad recomendada"
+  />
+</div>
+
 
       <div class="form-group">
         <label for="precio">Precio:</label>
         <input
           type="number"
           id="precio"
-          v-model.number="mascota.precio"
+          v-model.number="juguete.precio"
           required
-          placeholder="Precio de la camisa"
+          placeholder="Precio de la juguete"
         />
       </div>
 

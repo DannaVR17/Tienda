@@ -1,50 +1,50 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import mascotasApiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/Bebidas.ApiService'
 
-const alimento = ref<any[]>([])
+const bebidas = ref<any[]>([])
 const searchTerm = ref('')
 const router = useRouter()
 
 onMounted(async () => {
-  traerAlimento()
+  traerbebidas()
 })
 
-const alimentosFiltrados = computed(() =>
-  alimento.value.filter((alimento) =>
-    alimento.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
+const bebidasFiltradas = computed(() =>
+  bebidas.value.filter((bebidas) =>
+    bebidas.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
   ),
 )
 
-async function traerAlimento() {
+async function traerbebidas() {
   try {
-    const data = await mascotasApiService.getAlimentos()
-    alimento.value = data
+    const data = await apiService.getAllBebida()
+    bebidas.value = data
   } catch (error) {
-    console.error('Error al cargar camisas:', error)
+    console.error('Error al cargar las bebidas:', error)
   }
 }
 
-function crearAlimento() {
-  router.push('/mascotas/create')
+function createBebida() {
+  router.push('/bebidas/create')
 }
 
-function editarAlimento(id: string) {
-  router.push(`/mascotas/update/${id}`)
+function updateBebida(id: string) {
+  router.push(`/bebidas/update/${id}`)
 }
 
-async function eliminarAlimento(id: any) {
-  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar esta camisa?')
+async function deleteBebida(id: any) {
+  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar esta bebida?')
   if (!confirmado) return
 
   try {
-    await mascotasApiService.deleteAlimentos(id)
-    alert('Camisa eliminada correctamente.')
-    await traerAlimento()
+    await apiService.deleteBebida(id)
+    alert('Bebida eliminada correctamente.')
+    await traerbebidas()
   } catch (err) {
     console.error(err)
-    alert('Ocurrió un error al eliminar la camisa.')
+    alert('Ocurrió un error al eliminar la bebida.')
   }
 }
 </script>
@@ -52,8 +52,8 @@ async function eliminarAlimento(id: any) {
 <template>
   <div class="container">
     <div class="header">
-      <h2>Alimentos registrados</h2>
-      <button class="create-btn" @click="crearAlimento">+ Nuevo alimento de mascotas</button>
+      <h2>Bebidas registradas</h2>
+      <button class="create-btn" @click="createBebida">+ Nueva bebida</button>
     </div>
 
     <input
@@ -63,18 +63,16 @@ async function eliminarAlimento(id: any) {
       placeholder="Buscar por nombre..."
     />
 
-    <div class="camisa-list">
-      <div class="camisa-card" v-for="alimento in alimentosFiltrados" :key="alimento._id">
-        <h3>{{ alimento.nombre }}</h3>
-        <p><strong>Nombre:</strong> {{ alimento.nombre }}</p>
-        <p><strong>Color:</strong> {{ alimento.Peso }}</p>
-        <p><strong>edad de perro:</strong> {{ alimento.edad_perro }}</p>
-        <p><strong>Precio: $</strong> {{ alimento.precio }}</p>
-
+    <div class="bebida-list">
+      <div class="bebida-card" v-for="bebida in bebidasFiltradas" :key="bebida._id">
+        <h3>{{ bebida.nombre }}</h3>
+        <p><strong>Tipo:</strong> {{ bebida.tipo }}</p>
+        <p><strong>disponible:</strong> {{ bebida.disponible }}</p>
+        <p><strong>Precio: $</strong> {{ bebida.precio }}</p>
 
         <div class="actions">
-          <button class="edit-btn" @click="editarAlimento(alimento._id)">Editar</button>
-          <button class="delete-btn" @click="eliminarAlimento(alimento._id)">Eliminar</button>
+          <button class="edit-btn" @click="updateBebida(bebida._id)">Editar</button>
+          <button class="delete-btn" @click="deleteBebida(bebida._id)">Eliminar</button>
         </div>
       </div>
     </div>

@@ -1,50 +1,50 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import mascotasApiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/RapidaApiService'
 
-const alimento = ref<any[]>([])
+const rapidas = ref<any[]>([])
 const searchTerm = ref('')
 const router = useRouter()
 
 onMounted(async () => {
-  traerAlimento()
+  conseguirTodasRapidas()
 })
 
-const alimentosFiltrados = computed(() =>
-  alimento.value.filter((alimento) =>
-    alimento.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
+const rapidaFiltradas = computed(() =>
+  rapidas.value.filter((rapida) =>
+    rapida.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
   ),
 )
 
-async function traerAlimento() {
+async function conseguirTodasRapidas() {
   try {
-    const data = await mascotasApiService.getAlimentos()
-    alimento.value = data
+    const data = await apiService.conseguirTodasRapidas()
+    rapidas.value = data
   } catch (error) {
-    console.error('Error al cargar camisas:', error)
+    console.error('Error al cargar comidas:', error)
   }
 }
 
-function crearAlimento() {
-  router.push('/mascotas/create')
+function crearRapida() {
+  router.push('/rapidas/create')
 }
 
-function editarAlimento(id: string) {
-  router.push(`/mascotas/update/${id}`)
+function editarRapida(id: string) {
+  router.push(`/comida/update/${id}`)
 }
 
-async function eliminarAlimento(id: any) {
-  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar esta camisa?')
+async function eliminarRapida(id: any) {
+  const confirmado = window.confirm('¿Estás seguro que deseas eliminar la comida?')
   if (!confirmado) return
 
   try {
-    await mascotasApiService.deleteAlimentos(id)
-    alert('Camisa eliminada correctamente.')
-    await traerAlimento()
+    await apiService.eliminarRapida(id)
+    alert('Comida eliminada correctamente.')
+    await conseguirTodasRapidas()
   } catch (err) {
     console.error(err)
-    alert('Ocurrió un error al eliminar la camisa.')
+    alert('Ocurrió un error al eliminar la comida.')
   }
 }
 </script>
@@ -52,8 +52,8 @@ async function eliminarAlimento(id: any) {
 <template>
   <div class="container">
     <div class="header">
-      <h2>Alimentos registrados</h2>
-      <button class="create-btn" @click="crearAlimento">+ Nuevo alimento de mascotas</button>
+      <h2>Comida registrada</h2>
+      <button class="create-btn" @click="crearRapida">+ Nueva comida</button>
     </div>
 
     <input
@@ -63,18 +63,16 @@ async function eliminarAlimento(id: any) {
       placeholder="Buscar por nombre..."
     />
 
-    <div class="camisa-list">
-      <div class="camisa-card" v-for="alimento in alimentosFiltrados" :key="alimento._id">
-        <h3>{{ alimento.nombre }}</h3>
-        <p><strong>Nombre:</strong> {{ alimento.nombre }}</p>
-        <p><strong>Color:</strong> {{ alimento.Peso }}</p>
-        <p><strong>edad de perro:</strong> {{ alimento.edad_perro }}</p>
-        <p><strong>Precio: $</strong> {{ alimento.precio }}</p>
-
+    <div class="rapida-list">
+      <div class="rapida-card" v-for="rapida in rapidaFiltradas" :key="rapida._id">
+        <h3>{{ rapida.nombre }}</h3>
+        <p><strong>Descripción:</strong> {{ rapida.descripcion }}</p>
+        <p><strong>Calorias: $</strong> {{ rapida.calorias }}</p>
+        <p><strong>Precio: $</strong> {{ rapida.precio }}</p>
 
         <div class="actions">
-          <button class="edit-btn" @click="editarAlimento(alimento._id)">Editar</button>
-          <button class="delete-btn" @click="eliminarAlimento(alimento._id)">Eliminar</button>
+          <button class="edit-btn" @click="editarRapida(rapida._id)">Editar</button>
+          <button class="delete-btn" @click="eliminarRapida(rapida._id)">Eliminar</button>
         </div>
       </div>
     </div>
@@ -128,13 +126,13 @@ h2 {
   font-size: 1rem;
 }
 
-.camisa-list {
+.rapida-list {
   display: grid;
   gap: 1.2rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.camisa-card {
+.rapida-card {
   background: #f8f8f8;
   border-radius: 10px;
   padding: 1rem;
@@ -144,7 +142,7 @@ h2 {
   cursor: pointer;
 }
 
-.camisa-card:hover {
+.rapida-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }

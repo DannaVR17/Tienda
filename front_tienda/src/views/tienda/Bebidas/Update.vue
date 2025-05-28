@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import apiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/Bebidas.ApiService'
 
 const route = useRoute()
 const router = useRouter()
 
-interface mascota {
+interface bebida {
   nombre: string
-  peso: string
-  edad_perro: number
+  tipo: string
+  disponible: boolean
   precio: number
 }
 
-const mascota = reactive<mascota>({
+const bebida = reactive<bebida>({
   nombre: '',
-  peso: '',
-  edad_perro: 0,
+  tipo: '',
+  disponible: false,
   precio: 0,
 })
 
@@ -25,25 +25,25 @@ const error = ref('')
 onMounted(async () => {
   try {
     const id = route.params.id as string
-    const data = await apiService.getAlimentosById(id)
-    mascota.nombre = data.nombre
-    mascota.peso = data.peso
-    mascota.edad_perro = data.edad_perro
-    mascota.precio = data.precio
+    const data = await apiService.getBebidaById(id)
+    bebida.nombre = data.nombre
+    bebida.tipo = data.tipo
+    bebida.disponible = data.disponible
+    bebida.precio = data.precio
   } catch (e) {
-    error.value = 'Error cargando datos de la mascota.'
+    error.value = 'Error cargando datos de la bebida.'
     console.error(e)
   }
 })
 
-const actualizarMascota = async () => {
+const actualizarbebida = async () => {
   try {
     const id = route.params.id as string
-    await apiService.updateAlimentos(id, mascota)
-    alert('Mascota actualizada con éxito.')
-    router.push('/mascotas')
+    await apiService.updateBebida(id, bebida)
+    alert('bebida actualizada con éxito.')
+    router.push('/bebidas')
   } catch (e) {
-    error.value = 'Error actualizando la mascota.'
+    error.value = 'Error actualizando la bebida.'
     console.error(e)
   }
 }
@@ -51,52 +51,46 @@ const actualizarMascota = async () => {
 
 <template>
   <div class="form-container">
-    <h2>Editar Mascota</h2>
-    <form @submit.prevent="actualizarMascota" novalidate>
+    <h2>Editar bebida</h2>
+    <form @submit.prevent="actualizarbebida" novalidate>
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input
           type="text"
           id="nombre"
-          v-model="mascota.nombre"
+          v-model="bebida.nombre"
           required
-          placeholder="Nombre de la mascota"
+          placeholder="Nombre de la bebida"
         />
       </div>
 
-        <div class="form-group">
-          <label for="peso">Peso (kg):</label>
-          <input
-            type="number"
-            id="peso"
-            v-model.number="mascota.peso"
-            required
-            placeholder="Ej. 4.5"
-            step="0.1"
-            min="0"
-          />
-        </div>
+      <div class="form-group">
+        <label for="tipo">tipo:</label>
+        <select v-model="bebida.tipo" id="tipo" required>
+          <option disabled value="">Selecciona un tipo</option>
+          <option>sin alcohol</option>
+          <option>alcohol</option>
+          <option>azucar</option>
+          <option>sin azucar</option>
+        </select>
+      </div>
 
-          <div class="form-group">
-            <label for="edad_perro">Edad del perro (años):</label>
-            <input
-              type="number"
-              id="edad_perro"
-              v-model.number="mascota.edad_perro"
-              required
-              placeholder="Ej. 3"
-              min="0"
-            />
-          </div>
+        <div class="form-group">
+          <label for="disponible">¿Disponible?</label>
+            <select id="disponible" v-model="bebida.disponible" required>
+            <option :value="true">Sí</option>
+            <option :value="false">No</option>
+          </select>
+        </div>
 
       <div class="form-group">
         <label for="precio">Precio:</label>
         <input
           type="number"
           id="precio"
-          v-model.number="mascota.precio"
+          v-model.number="bebida.precio"
           required
-          placeholder="Precio de la camisa"
+          placeholder="Precio de la bebida"
         />
       </div>
 

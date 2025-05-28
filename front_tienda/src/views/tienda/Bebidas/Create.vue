@@ -1,55 +1,64 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import MascotasapiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/Bebidas.ApiService'
 
 const nombre = ref('')
-const Peso = ref('')
-const edad_perro = ref('')
+const tipo = ref('')
+const disponible = ref('')
 const precio = ref('')
 const router = useRouter()
 
-const crearCamisa = async () => {
-  if (!nombre.value || !Peso.value || !edad_perro.value || !precio.value) {
+const createBebida = async () => {
+  if (!nombre.value || !tipo.value || !disponible.value || !precio.value) {
     alert('Por favor completa todos los campos.')
     return
   }
 
   try {
-    await MascotasapiService.createAlimento({
+    await apiService.createBebida({
       nombre: nombre.value,
-      Peso: Peso.value,
-      edad_perro: edad_perro.value,
+      tipo: tipo.value,
+      disponible: disponible.value,
       precio: parseFloat(precio.value),
     })
-    alert('alimento registrado correctamente.')
-    router.push('/mascotas')
+    alert('Bebida registrada correctamente.')
+    router.push('/bebidas')
   } catch (error) {
-    console.error('Error al crear el alimento:', error)
-    alert('Ocurrió un error al registrar el alimento.')
+    console.error('Error al crear la bebida:', error)
+    alert('Ocurrió un error al registrar la bebida.')
   }
 }
 </script>
 
 <template>
   <div class="container">
-    <h2>Registrar nuevo alimento</h2>
+    <h2>Registrar nueva bebida</h2>
 
-    <form @submit.prevent="crearCamisa" class="form">
+    <form @submit.prevent="createBebida" class="form">
       <label>
         Nombre:
-        <input v-model="nombre" type="text" placeholder="Ej. Nutrecan" />
+        <input v-model="nombre" type="text" placeholder="Ej. Coca Cola" />
       </label>
-
-        <label>
-          Peso (kg):
-          <input v-model.number="Peso" type="number" placeholder="Ej. 8" />
-        </label>
 
       <label>
-        Edad del perro:
-        <input v-model="edad_perro" type="text" placeholder="Ej. 1 año, 8 años..." />
+        Tipo:
+        <select v-model="tipo">
+          <option disabled value="">seleccione un tipo</option>
+          <option>Sin alcohol</option>
+          <option>alcohol</option>
+          <option>sin azucar</option>
+          <option>azucar</option>
+        </select>
       </label>
+
+      <div class="form-group">
+        <label for="disponible">¿Disponible?</label>
+          <select id="disponible" v-model="disponible" required>
+          <option :value="true">Sí</option>
+          <option :value="false">No</option>
+        </select>
+      </div>
 
       <label>
         Precio:

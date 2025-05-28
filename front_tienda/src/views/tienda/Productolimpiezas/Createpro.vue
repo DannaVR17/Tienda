@@ -1,59 +1,52 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import MascotasapiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/productosApiServices'
 
 const nombre = ref('')
-const Peso = ref('')
-const edad_perro = ref('')
-const precio = ref('')
+const precio = ref<number | null>(null)
+const descripcion = ref('')
 const router = useRouter()
 
-const crearCamisa = async () => {
-  if (!nombre.value || !Peso.value || !edad_perro.value || !precio.value) {
+const crearProducto = async () => {
+  if (!nombre.value || !descripcion.value || precio.value === null) {
     alert('Por favor completa todos los campos.')
     return
   }
 
   try {
-    await MascotasapiService.createAlimento({
+    await apiService.createProducto({
       nombre: nombre.value,
-      Peso: Peso.value,
-      edad_perro: edad_perro.value,
-      precio: parseFloat(precio.value),
+      descripcion: descripcion.value,
+      precio: precio.value,
     })
-    alert('alimento registrado correctamente.')
-    router.push('/mascotas')
+    alert('Producto registrado correctamente.')
+    router.push('/productos')
   } catch (error) {
-    console.error('Error al crear el alimento:', error)
-    alert('Ocurrió un error al registrar el alimento.')
+    console.error('Error al crear el producto:', error)
+    alert('Ocurrió un error al registrar un producto.')
   }
 }
 </script>
 
 <template>
   <div class="container">
-    <h2>Registrar nuevo alimento</h2>
+    <h2>Registrar nuevo Producto</h2>
 
-    <form @submit.prevent="crearCamisa" class="form">
+    <form @submit.prevent="crearProducto" class="form">
       <label>
         Nombre:
-        <input v-model="nombre" type="text" placeholder="Ej. Nutrecan" />
+        <input v-model="nombre" type="text" placeholder="Ej. Jabón" />
       </label>
 
-        <label>
-          Peso (kg):
-          <input v-model.number="Peso" type="number" placeholder="Ej. 8" />
-        </label>
-
       <label>
-        Edad del perro:
-        <input v-model="edad_perro" type="text" placeholder="Ej. 1 año, 8 años..." />
+        Descripción:
+        <input v-model="descripcion" type="text" placeholder="Ej. Jabón para lavar ropa" />
       </label>
 
       <label>
         Precio:
-        <input v-model="precio" type="number" placeholder="Ej. 19.99" />
+        <input v-model.number="precio" type="number" placeholder="Ej. 19.99" />
       </label>
 
       <button type="submit">Guardar</button>

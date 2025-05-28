@@ -9,10 +9,10 @@ async function handleResponse(response: any) {
 }
 
 export default {
-  async getAlimentos() {
+  async getAllBebida() {
     console.log('URL de la API:', baseUrl)
 
-    const response = await fetch(`${baseUrl}/alimento`, {
+    const response = await fetch(`${baseUrl}/bebidas`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -21,8 +21,8 @@ export default {
     return handleResponse(response)
   },
 
-  async getAlimentosById(id: any) {
-    const response = await fetch(`${baseUrl}/alimento/${id}`, {
+  async getBebidaById(id: any) {
+    const response = await fetch(`${baseUrl}/bebida/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -31,8 +31,8 @@ export default {
     return handleResponse(response)
   },
 
-  async createAlimento(data: any) {
-    const response = await fetch(`${baseUrl}/alimento`, {
+  async createBebida(data: any) {
+    const response = await fetch(`${baseUrl}/bebida`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,8 +42,8 @@ export default {
     return handleResponse(response)
   },
 
-  async updateAlimentos(id: any, data: any) {
-    const response = await fetch(`${baseUrl}/alimento/${id}`, {
+  async updateBebida(id: any, data: any) {
+    const response = await fetch(`${baseUrl}/bebida/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -53,8 +53,8 @@ export default {
     return handleResponse(response)
   },
 
-  async deleteAlimentos(id: any) {
-    const response = await fetch(`${baseUrl}/alimento/${id}`, {
+  async deleteBebida(id: any) {
+    const response = await fetch(`${baseUrl}/bebida/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

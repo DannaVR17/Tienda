@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import apiService from '@/services/tiendaApiServices'
+import apiService from '@/services/camisaApiServices'
 
 const route = useRoute()
 const router = useRouter()
@@ -41,7 +41,7 @@ const actualizarCamisa = async () => {
     const id = route.params.id as string
     await apiService.updateCamisa(id, camisa)
     alert('Camisa actualizada con éxito.')
-    router.push('/tienda')
+    router.push('/ropa')
   } catch (e) {
     error.value = 'Error actualizando la camisa.'
     console.error(e)

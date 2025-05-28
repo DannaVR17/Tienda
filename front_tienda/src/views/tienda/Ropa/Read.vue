@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import apiService from '@/services/tiendaApiServices'
+import apiService from '@/services/camisaApiServices'
 
 const camisas = ref<any[]>([])
 const searchTerm = ref('')

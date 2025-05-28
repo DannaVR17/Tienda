@@ -1,50 +1,51 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import mascotasApiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/productosApiServices'
 
-const alimento = ref<any[]>([])
+const productos = ref<any[]>([])
 const searchTerm = ref('')
 const router = useRouter()
 
 onMounted(async () => {
-  traerAlimento()
+  traerProductos()
 })
 
-const alimentosFiltrados = computed(() =>
-  alimento.value.filter((alimento) =>
-    alimento.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
+const productosFiltrados = computed(() =>
+  productos.value.filter((productos) =>
+    productos.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
   ),
 )
 
-async function traerAlimento() {
+async function traerProductos() {
   try {
-    const data = await mascotasApiService.getAlimentos()
-    alimento.value = data
+    const data = await apiService.getProductos()
+    productos.value = data
   } catch (error) {
-    console.error('Error al cargar camisas:', error)
+    console.error('Error al cargar los productos:', error)
   }
 }
 
-function crearAlimento() {
-  router.push('/mascotas/create')
+
+function createProducto() {
+  router.push('/productos/create')
 }
 
-function editarAlimento(id: string) {
-  router.push(`/mascotas/update/${id}`)
+function updateProducto(id: string) {
+  router.push(`/productos/update/${id}`)
 }
 
-async function eliminarAlimento(id: any) {
-  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar esta camisa?')
+async function deleteProducto(id: any) {
+  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar este producto?')
   if (!confirmado) return
 
   try {
-    await mascotasApiService.deleteAlimentos(id)
-    alert('Camisa eliminada correctamente.')
-    await traerAlimento()
+    await apiService.deleteProducto(id)
+    alert('Producto eliminada correctamente.')
+    await traerProductos()
   } catch (err) {
     console.error(err)
-    alert('Ocurrió un error al eliminar la camisa.')
+    alert('Ocurrió un error al eliminar el producto.')
   }
 }
 </script>
@@ -52,8 +53,8 @@ async function eliminarAlimento(id: any) {
 <template>
   <div class="container">
     <div class="header">
-      <h2>Alimentos registrados</h2>
-      <button class="create-btn" @click="crearAlimento">+ Nuevo alimento de mascotas</button>
+      <h2>Productos Registrados</h2>
+      <button class="create-btn" @click="createProducto">+ Nueva producto</button>
     </div>
 
     <input
@@ -63,18 +64,17 @@ async function eliminarAlimento(id: any) {
       placeholder="Buscar por nombre..."
     />
 
-    <div class="camisa-list">
-      <div class="camisa-card" v-for="alimento in alimentosFiltrados" :key="alimento._id">
-        <h3>{{ alimento.nombre }}</h3>
-        <p><strong>Nombre:</strong> {{ alimento.nombre }}</p>
-        <p><strong>Color:</strong> {{ alimento.Peso }}</p>
-        <p><strong>edad de perro:</strong> {{ alimento.edad_perro }}</p>
-        <p><strong>Precio: $</strong> {{ alimento.precio }}</p>
+    <div class="productos-list">
+      <div class="productos-card" v-for="productos in productosFiltrados" :key="productos._id">
+        <h3>{{ productos.nombre }}</h3>
+        <p><strong>Nombre:</strong> {{ productos.nombre }}</p>
+        <p><strong>Precio:</strong> {{ productos.precio }}</p>
+        <p><strong>Descripción:</strong> {{ productos.descripcion }}</p>
 
 
         <div class="actions">
-          <button class="edit-btn" @click="editarAlimento(alimento._id)">Editar</button>
-          <button class="delete-btn" @click="eliminarAlimento(alimento._id)">Eliminar</button>
+          <button class="edit-btn" @click="updateProducto(productos._id)">Editar</button>
+          <button class="delete-btn" @click="deleteProducto(productos._id)">Eliminar</button>
         </div>
       </div>
     </div>

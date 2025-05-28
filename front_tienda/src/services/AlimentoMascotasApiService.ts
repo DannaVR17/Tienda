@@ -9,10 +9,10 @@ async function handleResponse(response: any) {
 }
 
 export default {
-  async getCamisas() {
+  async getAlimentos() {
     console.log('URL de la API:', baseUrl)
 
-    const response = await fetch(`${baseUrl}/camisas`, {
+    const response = await fetch(`${baseUrl}/alimentos`, { // ← Aquí estaba el error
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -21,8 +21,8 @@ export default {
     return handleResponse(response)
   },
 
-  async getCamisaById(id: any) {
-    const response = await fetch(`${baseUrl}/camisa/${id}`, {
+  async getAlimentosById(id: any) {
+    const response = await fetch(`${baseUrl}/alimento/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -31,8 +31,8 @@ export default {
     return handleResponse(response)
   },
 
-  async createCamisa(data: any) {
-    const response = await fetch(`${baseUrl}/camisa`, {
+  async createAlimento(data: any) {
+    const response = await fetch(`${baseUrl}/alimento`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,8 +42,8 @@ export default {
     return handleResponse(response)
   },
 
-  async updateCamisa(id: any, data: any) {
-    const response = await fetch(`${baseUrl}/camisa/${id}`, {
+  async updateAlimentos(id: any, data: any) {
+    const response = await fetch(`${baseUrl}/alimento/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -53,8 +53,8 @@ export default {
     return handleResponse(response)
   },
 
-  async deleteCamisa(id: any) {
-    const response = await fetch(`${baseUrl}/camisa/${id}`, {
+  async deleteAlimentos(id: any) {
+    const response = await fetch(`${baseUrl}/alimento/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

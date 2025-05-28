@@ -1,50 +1,49 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import mascotasApiService from '@/services/AlimentoMascotasApiService'
+import apiService from '@/services/JuguetesApiServices'
 
-const alimento = ref<any[]>([])
+const juguetes = ref<any[]>([])
 const searchTerm = ref('')
 const router = useRouter()
 
 onMounted(async () => {
-  traerAlimento()
+  traerjuguetes()
 })
 
-const alimentosFiltrados = computed(() =>
-  alimento.value.filter((alimento) =>
-    alimento.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
+const juguetesFiltradas = computed(() =>
+  juguetes.value.filter((juguete) =>
+    juguete.nombre.toLowerCase().includes(searchTerm.value.toLowerCase()),
   ),
 )
 
-async function traerAlimento() {
+async function traerjuguetes() {
   try {
-    const data = await mascotasApiService.getAlimentos()
-    alimento.value = data
+    const data = await apiService.getjuguetes()
+    juguetes.value = data
   } catch (error) {
-    console.error('Error al cargar camisas:', error)
+    console.error('Error al cargar juguetes:', error)
   }
 }
 
-function crearAlimento() {
-  router.push('/mascotas/create')
+function crearjuguete() {
+router.push('/juguetes/create')
 }
 
-function editarAlimento(id: string) {
-  router.push(`/mascotas/update/${id}`)
-}
+function editarjuguete(id: string) {
+router.push(`/juguetes/update/${id}`)}
 
-async function eliminarAlimento(id: any) {
-  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar esta camisa?')
+async function eliminarjuguete(id: any) {
+  const confirmado = window.confirm('¿Estás seguro de que deseas eliminar esta juguete?')
   if (!confirmado) return
 
   try {
-    await mascotasApiService.deleteAlimentos(id)
-    alert('Camisa eliminada correctamente.')
-    await traerAlimento()
+    await apiService.deletejuguete(id)
+    alert('juguete eliminada correctamente.')
+    await traerjuguetes()
   } catch (err) {
     console.error(err)
-    alert('Ocurrió un error al eliminar la camisa.')
+    alert('Ocurrió un error al eliminar la juguete.')
   }
 }
 </script>
@@ -52,8 +51,8 @@ async function eliminarAlimento(id: any) {
 <template>
   <div class="container">
     <div class="header">
-      <h2>Alimentos registrados</h2>
-      <button class="create-btn" @click="crearAlimento">+ Nuevo alimento de mascotas</button>
+      <h2>Juguetes Registrados</h2>
+      <button class="create-btn" @click="crearjuguete">+ Añadir Juguete </button>
     </div>
 
     <input
@@ -63,23 +62,21 @@ async function eliminarAlimento(id: any) {
       placeholder="Buscar por nombre..."
     />
 
-    <div class="camisa-list">
-      <div class="camisa-card" v-for="alimento in alimentosFiltrados" :key="alimento._id">
-        <h3>{{ alimento.nombre }}</h3>
-        <p><strong>Nombre:</strong> {{ alimento.nombre }}</p>
-        <p><strong>Color:</strong> {{ alimento.Peso }}</p>
-        <p><strong>edad de perro:</strong> {{ alimento.edad_perro }}</p>
-        <p><strong>Precio: $</strong> {{ alimento.precio }}</p>
+    <div class="juguete-card" v-for="juguete in juguetesFiltradas" :key="juguete._id">
+      <h3>{{ juguete.nombre }}</h3>
+      <p><strong>Categoría:</strong> {{ juguete.categoria }}</p>
+      <p><strong>Edad recomendada:</strong> {{ juguete.edadRecomendada }}</p>
+      <p><strong>Color:</strong> {{ juguete.color }}</p>
+      <p><strong>Precio: $</strong> {{ juguete.precio }}</p>
 
-
-        <div class="actions">
-          <button class="edit-btn" @click="editarAlimento(alimento._id)">Editar</button>
-          <button class="delete-btn" @click="eliminarAlimento(alimento._id)">Eliminar</button>
-        </div>
+      <div class="actions">
+        <button class="edit-btn" @click="editarjuguete(juguete._id)">Editar</button>
+        <button class="delete-btn" @click="eliminarjuguete(juguete._id)">Eliminar</button>
       </div>
     </div>
-  </div>
+  </div> <!-- Este cierre es el que faltaba -->
 </template>
+
 
 <style scoped>
 .container {
@@ -128,13 +125,13 @@ h2 {
   font-size: 1rem;
 }
 
-.camisa-list {
+.juguete-list {
   display: grid;
   gap: 1.2rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.camisa-card {
+.juguete-card {
   background: #f8f8f8;
   border-radius: 10px;
   padding: 1rem;
@@ -144,7 +141,7 @@ h2 {
   cursor: pointer;
 }
 
-.camisa-card:hover {
+.juguete-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
